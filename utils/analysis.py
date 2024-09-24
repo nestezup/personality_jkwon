@@ -5,16 +5,19 @@ import random
 
 def load_data():
     """JSON 파일들에서 데이터를 로드합니다."""
-    current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_dir = os.path.join(current_dir, 'data')
-    
-    with open(os.path.join(data_dir, 'mbti_traits.json'), 'r', encoding='utf-8') as f:
-        mbti_data = json.load(f)
-    with open(os.path.join(data_dir, 'zodiac_traits.json'), 'r', encoding='utf-8') as f:
-        zodiac_data = json.load(f)
-    with open(os.path.join(data_dir, 'blood_type_traits.json'), 'r', encoding='utf-8') as f:
-        blood_type_data = json.load(f)
-    return mbti_data, zodiac_data, blood_type_data
+    try:
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        data_dir = os.path.join(current_dir, 'data')
+        
+        with open(os.path.join(data_dir, 'mbti_traits.json'), 'r', encoding='utf-8') as f:
+            mbti_data = json.load(f)
+        with open(os.path.join(data_dir, 'zodiac_traits.json'), 'r', encoding='utf-8') as f:
+            zodiac_data = json.load(f)
+        with open(os.path.join(data_dir, 'blood_type_traits.json'), 'r', encoding='utf-8') as f:
+            blood_type_data = json.load(f)
+        return mbti_data, zodiac_data, blood_type_data
+    except Exception as e:
+        raise Exception(f"데이터 로딩 중 오류 발생: {str(e)}")
 
 def get_zodiac_sign(month, day):
     """생일을 기반으로 별자리를 반환합니다."""
@@ -32,6 +35,7 @@ def get_zodiac_sign(month, day):
     return "염소자리"
 
 def generate_advice(traits):
+    """성격 특성을 기반으로 조언을 생성합니다."""
     positive_traits = [trait for trait in traits if any(keyword in trait for keyword in ["강한", "뛰어난", "좋은", "잘하는"])]
     negative_traits = [trait for trait in traits if any(keyword in trait for keyword in ["부족", "어려운", "싫어하는", "잘 못하는"])]
     
@@ -56,32 +60,35 @@ def generate_advice(traits):
         "때로는 편안한 휴식도 필요합니다. 자신을 돌보는 시간을 가지세요."
     ])
     
-    return random.sample(advice, 3)  # 무작위로 5개의 조언을 선택
+    return random.sample(advice, 5)  # 무작위로 5개의 조언을 선택
 
 def analyze_personality(zodiac_sign, blood_type, mbti):
     """사용자 입력을 기반으로 성격을 분석합니다."""
-    mbti_data, zodiac_data, blood_type_data = load_data()
-    
-    analysis = {
-        "zodiac": zodiac_data[zodiac_sign]["특징"],
-        "blood_type": blood_type_data[blood_type]["특징"],
-        "mbti": {}
-    }
-    
-    # MBTI 데이터 처리
-    if mbti in mbti_data:
-        analysis["mbti"] = mbti_data[mbti]
-    else:
-        analysis["mbti"] = {"심리적 특성": ["MBTI 정보를 찾을 수 없습니다."]}
-    
-    all_traits = (analysis["zodiac"] + analysis["blood_type"] + 
-                  analysis["mbti"].get("심리적 특성", []) + 
-                  analysis["mbti"].get("대인관계", []) + 
-                  analysis["mbti"].get("직업적 특성", []) + 
-                  analysis["mbti"].get("연애 관계", []))
-    combined = list(set(all_traits))  # 중복 제거
-    
-    analysis["combined"] = combined
-    analysis["advice"] = generate_advice(combined)
-    
-    return analysis
+    try:
+        mbti_data, zodiac_data, blood_type_data = load_data()
+        
+        analysis = {
+            "zodiac": zodiac_data[zodiac_sign]["특징"],
+            "blood_type": blood_type_data[blood_type]["특징"],
+            "mbti": {}
+        }
+        
+        # MBTI 데이터 처리
+        if mbti in mbti_data:
+            analysis["mbti"] = mbti_data[mbti]
+        else:
+            analysis["mbti"] = {"심리적 특성": ["MBTI 정보를 찾을 수 없습니다."]}
+        
+        all_traits = (analysis["zodiac"] + analysis["blood_type"] + 
+                      analysis["mbti"].get("심리적 특성", []) + 
+                      analysis["mbti"].get("대인관계", []) + 
+                      analysis["mbti"].get("직업적 특성", []) + 
+                      analysis["mbti"].get("연애 관계", []))
+        combined = list(set(all_traits))  # 중복 제거
+        
+        analysis["combined"] = combined
+        analysis["advice"] = generate_advice(combined)
+        
+        return analysis
+    except Exception as e:
+        raise Exception(f"성격 분석 중 오류 발생: {str(e)}")

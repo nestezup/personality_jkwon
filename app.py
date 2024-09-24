@@ -4,6 +4,7 @@ from utils.analysis import analyze_personality, get_zodiac_sign
 @st.cache_data
 def load_data():
     # 여기에 필요한 데이터 로딩 로직을 추가할 수 있습니다.
+    # 현재는 utils/analysis.py에서 데이터를 로드하고 있으므로 이 함수는 비어 있습니다.
     pass
 
 def main():
@@ -45,7 +46,6 @@ def main():
     st.markdown("---")
     st.markdown("© 2024 귀여운 성격 분석기. 모든 분석 결과는 재미로만 봐주세요! 🎉")
 
-@st.cache_data
 def display_analysis_result(zodiac_sign, blood_type, mbti, analysis_result):
     st.header("🎨 당신의 성격 분석 결과")
     

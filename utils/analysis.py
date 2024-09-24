@@ -62,11 +62,11 @@ def analyze_personality(zodiac_sign, blood_type, mbti):
     """사용자 입력을 기반으로 성격을 분석합니다."""
     mbti_data, zodiac_data, blood_type_data = load_data()
     
-    blood_type_key = f"{blood_type}형"
+    # 혈액형 키 수정 (A, B, O, AB 그대로 사용)
     
     analysis = {
         "zodiac": zodiac_data[zodiac_sign]["특징"],
-        "blood_type": blood_type_data[blood_type_key]["특징"],
+        "blood_type": blood_type_data[blood_type]["특징"],
         "mbti": mbti_data[mbti]["심리적 특성"] + mbti_data[mbti]["대인관계"]
     }
     

@@ -2,10 +2,10 @@ import streamlit as st
 from utils.analysis import analyze_personality, get_zodiac_sign
 
 # 페이지 설정
-st.set_page_config(page_title="귀여운 성격 분석기", page_icon="🐾", layout="wide")
+st.set_page_config(page_title="재미있는 성격 분석기", page_icon="🐾", layout="wide")
 
 # 제목
-st.title("🌟 귀여운 성격 분석기 🌟")
+st.title("🌟 재미있는 성격 분석기 🌟")
 
 # 사용자 입력
 col1, col2, col3 = st.columns(3)
@@ -64,4 +64,4 @@ with st.expander("성격 개발 팁"):
 
 # 푸터
 st.markdown("---")
-st.markdown("© 2024 귀여운 성격 분석기. 모든 분석 결과는 재미로만 봐주세요! 🎉")
+st.markdown("© 2024 재미있는 성격 분석기. 모든 분석 결과는 재미로만 봐주세요! 🎉")
